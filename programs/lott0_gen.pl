@@ -2,10 +2,8 @@
 # PowerBall 5 nums 0-69, 1 num 0-26
 # MegaMillion 5 nums 0-70, 1 num 0-26
 #
-use v5.16;
 use strict;
 use warnings;
-use diagnostics;
 #
 use feature 'say';
 use feature 'switch';
