@@ -1,13 +1,9 @@
-#!/usr/bin/perl
-###
-# This is a very basic test to try to add some cURL like functionality in perl.
-###
-# Created: Thu 10/13/2022 05:15:19 PM 
-# By: JB Williams
-
+#!/usr/bin/perl 
+#### # This is a very basic test to try to add some cURL like functionality in perl.  ### # Created: Thu 10/13/2022 05:15:19 PM # By: JB Williams
 use strict;
 use warnings;
 use diagnostics;
+#use Data::Dumper;
 use Getopt::Std;
 use HTTP::Tiny;
  
@@ -34,7 +30,7 @@ Example:
 ha:bco:qrt:u:w:
 Flags:
     -h      help menu(this menu)
-    -b      Browser Headers
+    -H      Browser Headers
     -c      GET HTML of page
     -o      Output file (absolute path) - doesn't work with headers ATM.
     -r      Response Code
@@ -58,12 +54,17 @@ sub get_headers {
     my ($browser) = @_;
     while (my ($k, $v) = each %{$browser->{headers}}) {
         for (ref $v eq 'ARRAY' ? @$v : $v) {
-            #my %myheader = "$k: $_\n";
-            #return %myheader;
-            print "$k: $_\n";
-            #return "$k: $_\n";
+    ##my @myheader = "$k: $_\n";
+    #my @header = <STDOUT>;
+        print "$k: $_\n";
+    
+        #return @header;
+    ##return @myheader;
+    ##print "$k: $_\n";
+    ##return "$k: $_\n";
         }
     }
+    #return @myheader;
 };
 
 sub change_https {
@@ -90,10 +91,10 @@ my $url             = get_absolute_URL($options{u}) if defined $options{u} || di
 $url                = change_https($url) if defined $options{s};
 my $browser         = HTTP::Tiny->new->get($url);
 my $response        = "$browser->{status} $browser->{reason}" if defined $options{r};
-my $bheaders        = get_headers($browser) if defined $options{b};
+#my @Headers         = get_headers($browser) if defined $options{b};
+my $header          = HTTP::Tiny->new->head($url);
 my $content         = "$browser->{content}" if defined $options{c};
-my @info = ($response, $bheaders, $content);
-
+my @info = ($response, $header, $content);
 foreach my $data (@info) {
     write_to_file($options{o}, $data) if defined $options{o};
     print "$data\n"; 
